@@ -33,6 +33,7 @@ async def on_ready():
         # Make the API request
         try:
             response = requests.get("https://newsapi.org/v2/everything", params=params)
+            print(response)
         except Exception as e:
             logger.error("Error making API request: %s", e)
             continue
