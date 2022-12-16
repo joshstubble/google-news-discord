@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  news-bot:
+    build: .
+    environment:
+      - GOOGLE_NEWS_API_KEY=${GOOGLE_NEWS_API_KEY}
+      - DISCORD_BOT_TOKEN=${DISCORD_BOT_TOKEN}
+      - DISCORD_CHANNEL_ID=${DISCORD_CHANNEL_ID}
+    volumes:
+      - .:/app
