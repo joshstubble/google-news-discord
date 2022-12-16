@@ -19,10 +19,11 @@ CHANNEL_ID = os.environ["DISCORD_CHANNEL_ID"]
 async def on_ready():
     # Send a starting message to the "news" channel
     news_channel = discord.utils.get(client.get_all_channels(), id=int(CHANNEL_ID))
-    await news_channel.send("News bot starting up! I'll be posting news articles every one minutes.")
+    await news_channel.send("News bot starting up! I'll be posting news articles every ten minutes.")
     # Start a timer to retrieve news articles every hour
+    printed = False  # Flag to track whether the response has been printed
     while True:
-        await asyncio.sleep(60)
+        await asyncio.sleep(600)
         # Build the query string for the Google News API
         query = "site:ft.com OR site:politico.com OR site:bloomberg.com OR site:wsj.com OR site:apnews.com OR site:reuters.com OR site:nytimes.com OR site:foxnews.com OR site:aljazeera.com when:1h"
         params = {
@@ -36,7 +37,9 @@ async def on_ready():
         except Exception as e:
             logger.error("Error making API request: %s", e)
             continue
-        print(response)  # Print the response object
+        if not printed:  # Print the response object only if it has not been printed yet
+            print(response)
+            printed = True
         # Parse the response and retrieve the articles
         try:
             articles = response.json()["articles"]
