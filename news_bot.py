@@ -2,6 +2,10 @@ import asyncio
 import discord
 import os
 import requests
+import logging
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 intents = discord.Intents.default()
 intents.members = True
@@ -24,9 +28,17 @@ async def on_ready():
             "apiKey": API_KEY
         }
         # Make the API request
-        response = requests.get("https://newsapi.org/v2/everything", params=params)
+        try:
+            response = requests.get("https://newsapi.org/v2/everything", params=params)
+        except Exception as e:
+            logger.error("Error making API request: %s", e)
+            continue
         # Parse the response and retrieve the articles
-        articles = response.json()["articles"]
+        try:
+            articles = response.json()["articles"]
+        except Exception as e:
+            logger.error("Error parsing API response: %s", e)
+            continue
         # Send a message with the articles to the "news" channel
         news_channel = discord.utils.get(client.get_all_channels(), id=int(CHANNEL_ID))
         for article in articles:
