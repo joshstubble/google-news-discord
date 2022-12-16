@@ -1,11 +1,12 @@
 import asyncio
 import discord
+import os
 import requests
 
 client = discord.Client()
 
-# Set the API key for the Google News API
-API_KEY = "YOUR_API_KEY_HERE"
+# Load the API key for the Google News API from the environment file
+API_KEY = os.environ["GOOGLE_NEWS_API_KEY"]
 
 @client.event
 async def on_ready():
@@ -28,4 +29,6 @@ async def on_ready():
         for article in articles:
             await news_channel.send(f"{article['title']}\n{article['url']}")
 
-client.run("YOUR_BOT_TOKEN_HERE")
+# Load the Discord bot token from the environment file
+BOT_TOKEN = os.environ["DISCORD_BOT_TOKEN"]
+client.run(BOT_TOKEN)
