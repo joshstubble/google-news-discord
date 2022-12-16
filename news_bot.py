@@ -4,6 +4,9 @@ import os
 import requests
 
 client = discord.Client()
+intents = discord.Intents.default()
+intents.members = True
+client = discord.Client(intents=intents)
 
 # Load the API key for the Google News API from the environment file
 API_KEY = os.environ["GOOGLE_NEWS_API_KEY"]
