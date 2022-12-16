@@ -26,7 +26,7 @@ async def on_ready():
     while True:
         await asyncio.sleep(60)
         # Build the query string for the Google News API
-        query = "-site:ft.com AND -site:politico.com AND -site:bloomberg.com AND -site:wsj.com AND -site:apnews.com AND -site:reuters.com AND -site:nytimes.com AND -site:foxnews.com AND -site:aljazeera.com AND -when:1h"
+        query = "site:ft.com AND site:politico.com AND site:bloomberg.com AND site:wsj.com AND site:apnews.com AND site:reuters.com AND site:nytimes.com AND site:foxnews.com AND site:aljazeera.com AND when:1h"
 
         params = {
             "q": query,
