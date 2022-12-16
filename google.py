@@ -7,6 +7,7 @@ client = discord.Client()
 
 # Load the API key for the Google News API from the environment file
 API_KEY = os.environ["GOOGLE_NEWS_API_KEY"]
+CHANNEL_ID = os.environ["DISCORD_CHANNEL_ID"]
 
 @client.event
 async def on_ready():
@@ -25,7 +26,7 @@ async def on_ready():
         # Parse the response and retrieve the articles
         articles = response.json()["articles"]
         # Send a message with the articles to the "news" channel
-        news_channel = discord.utils.get(client.get_all_channels(), id=CHANNEL_ID_HERE)
+        news_channel = discord.utils.get(client.get_all_channels(), id=int(CHANNEL_ID))
         for article in articles:
             await news_channel.send(f"{article['title']}\n{article['url']}")
 
