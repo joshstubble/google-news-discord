@@ -19,10 +19,10 @@ CHANNEL_ID = os.environ["DISCORD_CHANNEL_ID"]
 async def on_ready():
     # Send a starting message to the "news" channel
     news_channel = discord.utils.get(client.get_all_channels(), id=int(CHANNEL_ID))
-    await news_channel.send("News bot starting up! I'll be posting news articles every ten minutes.")
+    await news_channel.send("News bot starting up! I'll be posting news articles every two minutes.")
     # Start a timer to retrieve news articles every hour
     while True:
-        await asyncio.sleep(600)
+        await asyncio.sleep(120)
         # Build the query string for the Google News API
         query = "site:ft.com OR site:politico.com OR site:bloomberg.com OR site:wsj.com OR site:apnews.com OR site:reuters.com OR site:nytimes.com OR site:foxnews.com OR site:aljazeera.com when:1h"
         params = {
