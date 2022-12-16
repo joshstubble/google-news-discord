@@ -19,10 +19,10 @@ CHANNEL_ID = os.environ["DISCORD_CHANNEL_ID"]
 async def on_ready():
     # Send a starting message to the "news" channel
     news_channel = discord.utils.get(client.get_all_channels(), id=int(CHANNEL_ID))
-    await news_channel.send("News bot starting up! I'll be posting news articles every two minutes.")
+    await news_channel.send("News bot starting up! I'll be posting news articles every ten minutes.")
     # Start a timer to retrieve news articles every hour
     while True:
-        await asyncio.sleep(120)
+        await asyncio.sleep(600)
         # Build the query string for the Google News API
         query = "site:ft.com OR site:politico.com OR site:bloomberg.com OR site:wsj.com OR site:apnews.com OR site:reuters.com OR site:nytimes.com OR site:foxnews.com OR site:aljazeera.com when:1h"
         params = {
@@ -33,10 +33,10 @@ async def on_ready():
         # Make the API request
         try:
             response = requests.get("https://newsapi.org/v2/everything", params=params)
-            print(response)
         except Exception as e:
             logger.error("Error making API request: %s", e)
             continue
+        print(response)  # Print the response object
         # Parse the response and retrieve the articles
         try:
             articles = response.json()["articles"]
@@ -46,6 +46,8 @@ async def on_ready():
         # Send a message with the articles to the "news" channel
         for article in articles:
             await news_channel.send(f"{article['title']}\n{article['url']}")
+
+
 
 # Load the Discord bot token from the environment file
 BOT_TOKEN = os.environ["DISCORD_BOT_TOKEN"]
