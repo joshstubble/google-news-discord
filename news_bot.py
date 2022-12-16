@@ -3,7 +3,6 @@ import discord
 import os
 import requests
 
-client = discord.Client()
 intents = discord.Intents.default()
 intents.members = True
 client = discord.Client(intents=intents)
