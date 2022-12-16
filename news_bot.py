@@ -20,7 +20,7 @@ CHANNEL_ID = os.environ["DISCORD_CHANNEL_ID"]
 async def on_ready():
     # Send a starting message to the "news" channel
     news_channel = discord.utils.get(client.get_all_channels(), id=int(CHANNEL_ID))
-    await news_channel.send("News bot starting up! I'll be posting news articles every ten minutes.")
+    await news_channel.send("News bot starting up! I'll be posting news articles every minute.")
     # Start a timer to retrieve news articles every hour
     printed = False  # Flag to track whether the response has been printed
     while True:
