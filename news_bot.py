@@ -24,7 +24,7 @@ async def on_ready():
     # Start a timer to retrieve news articles every hour
     printed = False  # Flag to track whether the response has been printed
     while True:
-        await asyncio.sleep(600)
+        await asyncio.sleep(60)
         # Build the query string for the Google News API
         query = "site:ft.com OR site:politico.com OR site:bloomberg.com OR site:wsj.com OR site:apnews.com OR site:reuters.com OR site:nytimes.com OR site:foxnews.com OR site:aljazeera.com when:1h"
         params = {
