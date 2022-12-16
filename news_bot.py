@@ -4,7 +4,7 @@ import os
 import requests
 import logging
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
 intents = discord.Intents.default()
