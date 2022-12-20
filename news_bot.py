@@ -18,7 +18,7 @@ API_KEY = os.environ["GOOGLE_NEWS_API_KEY"]
 CHANNEL_ID = os.environ["DISCORD_CHANNEL_ID"]
 
 # Set up a list of domains to search for articles
-domains = ["ft.com", "politico.com", "bloomberg.com", "wsj.com", "apnews.com", "reuters.com", "nytimes.com", "foxnews.com", "aljazeera.com"]
+domains = ['wapo.com', 'nyp.com', 'ft.com', 'politico.com', 'bloomberg.com', 'wsj.com', 'apnews.com', 'reuters.com', 'nytimes.com', 'foxnews.com', 'aljazeera.com']
 
 @client.event
 async def on_ready():
@@ -31,11 +31,12 @@ async def on_ready():
         await asyncio.sleep(60)
         # Build the query string for the Google News API
 #        query = "when:1h"
-
+        async for message in news_channel.history(limit=1):
+            last_message_timestamp = message.created_at
         params = {
  #           "q": query,
             "domains": ",".join(domains),  # Specify the domains to search
-            "sortBy": "publishedAt",
+ #           "sortBy": "publishedAt",
             "apiKey": API_KEY
         }
         # Make the API request
@@ -44,20 +45,12 @@ async def on_ready():
         except Exception as e:
             logger.error("Error making API request: %s", e)
             continue
-        if not printed:  # Print the response object only if it has not been printed yet
-            print(response)
-            printed = True
         # Parse the response and retrieve the articles
         try:
             articles = response.json()["articles"]
         except Exception as e:
             logger.error("Error parsing API response: %s", e)
             continue
-        # Get the timestamp of the most recent message in the "news" channel
-        # Get the timestamp of the most recent message in the "news" channel
-        news_channel = discord.utils.get(client.get_all_channels(), id=int(CHANNEL_ID))
-        async for message in news_channel.history(limit=1):
-            last_message_timestamp = message.created_at
 
         # Send a message with the articles to the "news" channel if they were published after the most recent message in the channel
         for article in articles:
