@@ -3,6 +3,8 @@ import discord
 import os
 import requests
 import logging
+import datetime
+import dateutil.parser
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
@@ -28,10 +30,10 @@ async def on_ready():
     while True:
         await asyncio.sleep(60)
         # Build the query string for the Google News API
-        query = "when:1h"
+#        query = "when:1h"
 
         params = {
-            "q": query,
+ #           "q": query,
             "domains": ",".join(domains),  # Specify the domains to search
             "sortBy": "publishedAt",
             "apiKey": API_KEY
@@ -59,8 +61,12 @@ async def on_ready():
 
         # Send a message with the articles to the "news" channel if they were published after the most recent message in the channel
         for article in articles:
-            if article["publishedAt"] > last_message_timestamp:
-                await news_channel.send(f"{article['title']}\n{article['url']}")
+            # Parse the publishedAt string into a datetime object
+            published_at = dateutil.parser.parse(article["publishedAt"])
+            # Compare the published_at datetime with the last_message_timestamp datetime
+            if published_at > last_message_timestamp:
+               await news_channel.send(f"{article['title']}\n{article['url']}")
+
 
 # Load the Discord bot token from the environment file
 BOT_TOKEN = os.environ["DISCORD_BOT_TOKEN"]
