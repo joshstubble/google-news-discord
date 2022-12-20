@@ -52,7 +52,11 @@ async def on_ready():
             logger.error("Error parsing API response: %s", e)
             continue
         # Get the timestamp of the most recent message in the "news" channel
-        last_message_timestamp = discord.utils.find(lambda m: m.channel.id == CHANNEL_ID, client.messages).created_at
+        # Get the timestamp of the most recent message in the "news" channel
+        news_channel = discord.utils.get(client.get_all_channels(), id=int(CHANNEL_ID))
+        async for message in news_channel.history(limit=1):
+            last_message_timestamp = message.created_at
+
         # Send a message with the articles to the "news" channel if they were published after the most recent message in the channel
         for article in articles:
             if article["publishedAt"] > last_message_timestamp:
