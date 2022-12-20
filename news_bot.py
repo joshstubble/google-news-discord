@@ -15,6 +15,8 @@ client = discord.Client(intents=intents)
 API_KEY = os.environ["GOOGLE_NEWS_API_KEY"]
 CHANNEL_ID = os.environ["DISCORD_CHANNEL_ID"]
 
+# Set up a list of domains to search for articles
+domains = ["ft.com", "politico.com", "bloomberg.com", "wsj.com", "apnews.com", "reuters.com", "nytimes.com", "foxnews.com", "aljazeera.com"]
 
 @client.event
 async def on_ready():
@@ -26,10 +28,11 @@ async def on_ready():
     while True:
         await asyncio.sleep(60)
         # Build the query string for the Google News API
-        query = "site:ft.com AND site:politico.com AND site:bloomberg.com AND site:wsj.com AND site:apnews.com AND site:reuters.com AND site:nytimes.com AND site:foxnews.com AND site:aljazeera.com AND when:1h"
+        query = "when:1h"
 
         params = {
             "q": query,
+            "domains": ",".join(domains),  # Specify the domains to search
             "sortBy": "publishedAt",
             "apiKey": API_KEY
         }
@@ -48,11 +51,12 @@ async def on_ready():
         except Exception as e:
             logger.error("Error parsing API response: %s", e)
             continue
-        # Send a message with the articles to the "news" channel
+        # Get the timestamp of the most recent message in the "news" channel
+        last_message_timestamp = discord.utils.find(lambda m: m.channel.id == CHANNEL_ID, client.messages).created_at
+        # Send a message with the articles to the "news" channel if they were published after the most recent message in the channel
         for article in articles:
-            await news_channel.send(f"{article['title']}\n{article['url']}")
-
-
+            if article["publishedAt"] > last_message_timestamp:
+                await news_channel.send(f"{article['title']}\n{article['url']}")
 
 # Load the Discord bot token from the environment file
 BOT_TOKEN = os.environ["DISCORD_BOT_TOKEN"]
