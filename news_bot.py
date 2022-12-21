@@ -18,7 +18,7 @@ API_KEY = os.environ["GOOGLE_NEWS_API_KEY"]
 CHANNEL_ID = os.environ["DISCORD_CHANNEL_ID"]
 
 # Set up a list of domains to search for articles
-domains = ['wapo.com', 'nyp.com', 'ft.com', 'politico.com', 'bloomberg.com', 'wsj.com', 'apnews.com', 'reuters.com', 'nytimes.com', 'foxnews.com', 'aljazeera.com']
+domains = ['cnn.com', 'finance.yahoo.com', 'nypost.com', 'cnbc.com', 'wapo.com', 'ft.com', 'politico.com', 'bloomberg.com', 'wsj.com', 'apnews.com', 'reuters.com', 'nyt.com', 'foxnews.com', 'aljazeera.com']
 
 @client.event
 async def on_ready():
@@ -28,7 +28,7 @@ async def on_ready():
     # Start a timer to retrieve news articles every hour
     printed = False  # Flag to track whether the response has been printed
     while True:
-        await asyncio.sleep(300)
+        await asyncio.sleep(600)
         # Build the query string for the Google News API
 #        query = "when:1h"
         async for message in news_channel.history(limit=1):
