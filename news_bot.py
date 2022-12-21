@@ -15,16 +15,17 @@ client = discord.Client(intents=intents)
 
 # Load the API key for the Google News API from the environment file
 API_KEY = os.environ["GOOGLE_NEWS_API_KEY"]
-CHANNEL_ID = os.environ["DISCORD_CHANNEL_ID"]
+CHANNEL_IDS = os.environ["DISCORD_CHANNEL_ID"].split(",")
 
 # Set up a list of domains to search for articles
 domains = ['cnn.com', 'finance.yahoo.com', 'nypost.com', 'cnbc.com', 'wapo.com', 'ft.com', 'politico.com', 'bloomberg.com', 'wsj.com', 'apnews.com', 'reuters.com', 'nyt.com', 'foxnews.com', 'aljazeera.com']
 
 @client.event
 async def on_ready():
-    # Send a starting message to the "news" channel
-    news_channel = discord.utils.get(client.get_all_channels(), id=int(CHANNEL_ID))
-    await news_channel.send("News bot starting up! I'll be posting news articles every minute.")
+    # Send a starting message to the "news" channels
+    for channel_id in CHANNEL_IDS:
+        news_channel = discord.utils.get(client.get_all_channels(), id=int(channel_id))
+        await news_channel.send("News bot starting up! I'll be posting news articles every minute.")
     # Start a timer to retrieve news articles every hour
     printed = False  # Flag to track whether the response has been printed
     while True:
@@ -58,8 +59,9 @@ async def on_ready():
             published_at = dateutil.parser.parse(article["publishedAt"])
             # Compare the published_at datetime with the last_message_timestamp datetime
             if published_at > last_message_timestamp:
-               await news_channel.send(f"{article['title']}\n{article['url']}")
-
+                for channel_id in CHANNEL_IDS:
+                    news_channel = discord.utils.get(client.get_all_channels(), id=int(channel_id))
+                    await news_channel.send(f"{article['title']}\n{article['url']}")
 
 # Load the Discord bot token from the environment file
 BOT_TOKEN = os.environ["DISCORD_BOT_TOKEN"]
