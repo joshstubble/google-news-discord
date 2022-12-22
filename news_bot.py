@@ -15,9 +15,10 @@ client = discord.Client(intents=intents)
 
 # Load the API key for the Google News API from the environment file
 api_keys = [os.environ["GOOGLE_NEWS_API_KEY_1"], os.environ["GOOGLE_NEWS_API_KEY_2"]]
+CHANNEL_IDS = os.environ["DISCORD_CHANNEL_ID"].split(",")
+
 # Set up a counter to keep track of which API key is being used
 api_key_index = 0
-CHANNEL_IDS = os.environ["DISCORD_CHANNEL_ID"].split(",")
 
 # Set up a list of domains to search for articles
 domains = ['techcrunch.com', 'nbcnews.com', 'npr.org', 'thehill.com', 'abcnews.com', 'cnn.com/us', 'finance.yahoo.com', 'nypost.com', 'cnbc.com', 'wapo.com', 'ft.com', 'politico.com', 'bloomberg.com', 'wsj.com', 'apnews.com', 'reuters.com', 'nyt.com', 'bbc.com', 'abcnews.com', 'washingtontimes.com', 'foxnews.com', 'aljazeera.com']
@@ -48,8 +49,6 @@ async def on_ready():
         # Make the API request
         try:
             response = requests.get("https://newsapi.org/v2/everything", params=params)
-            # Reset the API key index to 0 if the request was successful
-            api_key_index = 0
         except Exception as e:
             logger.error("Error making API request: %s", e)
             continue
