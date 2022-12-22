@@ -17,6 +17,9 @@ client = discord.Client(intents=intents)
 api_keys = [os.environ["GOOGLE_NEWS_API_KEY_1"], os.environ["GOOGLE_NEWS_API_KEY_2"]]
 CHANNEL_IDS = os.environ["DISCORD_CHANNEL_ID"].split(",")
 
+# Set up a counter to keep track of which API key is being used
+    api_key_index = 0
+
 # Set up a list of domains to search for articles
 domains = ['techcrunch.com', 'nbcnews.com', 'npr.org', 'thehill.com', 'abcnews.com', 'cnn.com', 'finance.yahoo.com', 'nypost.com', 'cnbc.com', 'wapo.com', 'ft.com', 'politico.com', 'bloomberg.com', 'wsj.com', 'apnews.com', 'reuters.com', 'nyt.com', 'bbc.com', 'abcnews.com', 'washingtontimes.com', 'foxnews.com', 'aljazeera.com']
 
@@ -25,10 +28,6 @@ most_recent_timestamps = {}
 
 @client.event
 async def on_ready():
-    # Set up a list of API keys to use
-    api_keys = [os.environ["GOOGLE_NEWS_API_KEY_1"], os.environ["GOOGLE_NEWS_API_KEY_2"]]
-    # Set up a counter to keep track of which API key is being used
-    api_key_index = 0
     # Send a starting message to the "news" channels
     for channel_id in CHANNEL_IDS:
         news_channel = discord.utils.get(client.get_all_channels(), id=int(channel_id))
