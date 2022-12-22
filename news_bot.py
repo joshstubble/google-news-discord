@@ -14,7 +14,7 @@ intents.members = True
 client = discord.Client(intents=intents)
 
 # Load the API key for the Google News API from the environment file
-API_KEY = os.environ["GOOGLE_NEWS_API_KEY"]
+#API_KEY = os.environ["GOOGLE_NEWS_API_KEY"]
 CHANNEL_IDS = os.environ["DISCORD_CHANNEL_ID"].split(",")
 
 # Set up a list of domains to search for articles
@@ -25,6 +25,10 @@ most_recent_timestamps = {}
 
 @client.event
 async def on_ready():
+    # Set up a list of API keys to use
+    api_keys = [os.environ["GOOGLE_NEWS_API_KEY_1"], os.environ["GOOGLE_NEWS_API_KEY_2"]]
+    # Set up a counter to keep track of which API key is being used
+    api_key_index = 0
     # Send a starting message to the "news" channels
     for channel_id in CHANNEL_IDS:
         news_channel = discord.utils.get(client.get_all_channels(), id=int(channel_id))
@@ -41,13 +45,20 @@ async def on_ready():
  #           "q": query,
             "domains": ",".join(domains),  # Specify the domains to search
  #           "sortBy": "publishedAt",
-            "apiKey": API_KEY
+            "apiKey": api_keys[api_key_index]
         }
         # Make the API request
         try:
             response = requests.get("https://newsapi.org/v2/everything", params=params)
+            # Reset the API key index to 0 if the request was successful
+            api_key_index = 0
         except Exception as e:
             logger.error("Error making API request: %s", e)
+            continue
+        # Check if the API returned a 429 error (Too Many Requests)
+        if response.status_code == 429:
+            # Switch to the alternate API key
+            api_key_index = 1 - api_key_index
             continue
         # Parse the response and retrieve the articles
         try:
