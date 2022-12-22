@@ -21,7 +21,7 @@ CHANNEL_IDS = os.environ["DISCORD_CHANNEL_ID"].split(",")
 #api_key_index = 0
 
 # Set up a list of domains to search for articles
-domains = ['techcrunch.com', 'nbcnews.com', 'npr.org', 'thehill.com', 'abcnews.com', 'cnn.com', 'yahoo.com', 'nypost.com', 'cnbc.com', 'washingtonpost.com', 'ft.com', 'politico.com', 'bloomberg.com', 'wsj.com', 'apnews.com', 'reuters.com', 'nytimes.com', 'bbc.com', 'abcnews.com', 'washingtontimes.com', 'foxnews.com', 'aljazeera.com']
+domains = ['techmeme.com', 'nbcnews.com', 'npr.org', 'thehill.com', 'abcnews.com', 'cnn.com', 'yahoo.com', 'nypost.com', 'cnbc.com', 'washingtonpost.com', 'ft.com', 'politico.com', 'bloomberg.com', 'wsj.com', 'apnews.com', 'reuters.com', 'nytimes.com', 'bbc.com', 'abcnews.com', 'washingtontimes.com', 'foxnews.com', 'aljazeera.com']
 
 # Store the most recent timestamps of articles posted to the Discord channel(s) by publisher
 most_recent_timestamps = {}
