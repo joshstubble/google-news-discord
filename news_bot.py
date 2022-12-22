@@ -20,6 +20,9 @@ CHANNEL_IDS = os.environ["DISCORD_CHANNEL_ID"].split(",")
 # Set up a list of domains to search for articles
 domains = ['cnn.com', 'finance.yahoo.com', 'nypost.com', 'cnbc.com', 'wapo.com', 'ft.com', 'politico.com', 'bloomberg.com', 'wsj.com', 'apnews.com', 'reuters.com', 'nyt.com', 'foxnews.com', 'aljazeera.com']
 
+# Store the most recent timestamps of articles posted to the Discord channel(s) by publisher
+most_recent_timestamps = {}
+
 @client.event
 async def on_ready():
     # Send a starting message to the "news" channels
@@ -57,8 +60,13 @@ async def on_ready():
         for article in articles:
             # Parse the publishedAt string into a datetime object
             published_at = dateutil.parser.parse(article["publishedAt"])
-            # Compare the published_at datetime with the last_message_timestamp datetime
-            if published_at > last_message_timestamp:
+            # Get the publisher of the article
+            publisher = article["source"]["name"]
+            # Check if the published_at timestamp is newer than the most recent timestamp for this publisher
+            if publisher not in most_recent_timestamps or published_at > most_recent_timestamps[publisher]:
+                # Update the most recent timestamp for this publisher
+                most_recent_timestamps[publisher] = published_at
+                # Send the article to the Discord channel(s)
                 for channel_id in CHANNEL_IDS:
                     news_channel = discord.utils.get(client.get_all_channels(), id=int(channel_id))
                     await news_channel.send(f"{article['title']}\n{article['url']}")
