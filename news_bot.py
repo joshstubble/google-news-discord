@@ -18,7 +18,7 @@ API_KEY = os.environ["GOOGLE_NEWS_API_KEY"]
 CHANNEL_IDS = os.environ["DISCORD_CHANNEL_ID"].split(",")
 
 # Set up a list of domains to search for articles
-domains = ['cnn.com', 'finance.yahoo.com', 'nypost.com', 'cnbc.com', 'wapo.com', 'ft.com', 'politico.com', 'bloomberg.com', 'wsj.com', 'apnews.com', 'reuters.com', 'nyt.com', 'foxnews.com', 'aljazeera.com']
+domains = ['techcrunch.com', 'nbcnews.com', 'npr.org', 'thehill.com', 'abcnews.com', 'cnn.com', 'finance.yahoo.com', 'nypost.com', 'cnbc.com', 'wapo.com', 'ft.com', 'politico.com', 'bloomberg.com', 'wsj.com', 'apnews.com', 'reuters.com', 'nyt.com', 'bbc.com', 'abcnews.com', 'washingtontimes.com', 'foxnews.com', 'aljazeera.com']
 
 # Store the most recent timestamps of articles posted to the Discord channel(s) by publisher
 most_recent_timestamps = {}
@@ -28,11 +28,11 @@ async def on_ready():
     # Send a starting message to the "news" channels
     for channel_id in CHANNEL_IDS:
         news_channel = discord.utils.get(client.get_all_channels(), id=int(channel_id))
-        await news_channel.send("News bot starting up! I'll be posting news articles every minute.")
+        await news_channel.send("News bot starting up! I'll be posting news articles.")
     # Start a timer to retrieve news articles every hour
     printed = False  # Flag to track whether the response has been printed
     while True:
-        await asyncio.sleep(600)
+        await asyncio.sleep(480)
         # Build the query string for the Google News API
 #        query = "when:1h"
         async for message in news_channel.history(limit=1):
