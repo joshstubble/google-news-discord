@@ -18,7 +18,7 @@ api_keys = [os.environ["GOOGLE_NEWS_API_KEY_1"], os.environ["GOOGLE_NEWS_API_KEY
 CHANNEL_IDS = os.environ["DISCORD_CHANNEL_ID"].split(",")
 
 # Set up a counter to keep track of which API key is being used
-api_key_index = 0
+#api_key_index = 0
 
 # Set up a list of domains to search for articles
 domains = ['techcrunch.com', 'nbcnews.com', 'npr.org', 'thehill.com', 'abcnews.com', 'cnn.com/us', 'finance.yahoo.com', 'nypost.com', 'cnbc.com', 'wapo.com', 'ft.com', 'politico.com', 'bloomberg.com', 'wsj.com', 'apnews.com', 'reuters.com', 'nyt.com', 'bbc.com', 'abcnews.com', 'washingtontimes.com', 'foxnews.com', 'aljazeera.com']
@@ -40,10 +40,12 @@ async def on_ready():
 #        query = "when:1h"
         async for message in news_channel.history(limit=1):
             last_message_timestamp = message.created_at
+        api_key_index = 0 if "api_key_index" not in locals() else api_key_index 
         params = {
  #           "q": query,
             "domains": ",".join(domains),  # Specify the domains to search
  #           "sortBy": "publishedAt",
+            "language": "en",
             "apiKey": api_keys[api_key_index]
         }
         # Make the API request
