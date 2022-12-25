@@ -35,7 +35,7 @@ async def on_ready():
     # Start a timer to retrieve news articles every hour
     printed = False  # Flag to track whether the response has been printed
     while True:
-        await asyncio.sleep(240)
+        await asyncio.sleep(150)
         # Build the query string for the Google News API
 #        query = "when:1h"
         async for message in news_channel.history(limit=1):
