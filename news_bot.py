@@ -26,6 +26,15 @@ domains = ['axios.com', 'techmeme.com', 'nbcnews.com', 'npr.org', 'thehill.com',
 # Store the most recent timestamps of articles posted to the Discord channel(s) by publisher
 most_recent_timestamps = {}
 
+# Set the number of pages of results to retrieve
+num_pages = 5
+
+# Set the initial page number to 1
+page = 1
+
+# Set up an empty list to store the articles
+articles = []
+
 @client.event
 async def on_ready():
     # Send a starting message to the "news" channels
@@ -35,7 +44,7 @@ async def on_ready():
     # Start a timer to retrieve news articles every hour
     printed = False  # Flag to track whether the response has been printed
     while True:
-        await asyncio.sleep(240)
+        await asyncio.sleep(400)
         # Build the query string for the Google News API
 #        query = "when:1h"
         async for message in news_channel.history(limit=1):
@@ -48,6 +57,9 @@ async def on_ready():
             "language": "en",
             "apiKey": api_keys[api_key_index]
         }
+    while page <= num_pages:
+    # Set the "page" parameter in the API request
+    params["page"] = page
         # Make the API request
         try:
             response = requests.get("https://newsapi.org/v2/everything", params=params)
@@ -65,7 +77,12 @@ async def on_ready():
         except Exception as e:
             logger.error("Error parsing API response: %s", e)
             continue
+         # Add the articles for this page to the list of all articles
+        articles.extend(page_articles)
 
+        # Increment the page number
+        page += 1
+            
         # Send a message with the articles to the "news" channel if they were published after the most recent message in the channel
         for article in articles:
             # Parse the publishedAt string into a datetime object
