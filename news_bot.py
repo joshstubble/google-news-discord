@@ -58,8 +58,8 @@ async def on_ready():
             "apiKey": api_keys[api_key_index]
         }
     while page <= num_pages:
-    # Set the "page" parameter in the API request
-    params["page"] = page
+        # Set the "page" parameter in the API request
+        params["page"] = page
         # Make the API request
         try:
             response = requests.get("https://newsapi.org/v2/everything", params=params)
