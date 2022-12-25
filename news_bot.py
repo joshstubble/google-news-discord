@@ -14,7 +14,7 @@ intents.members = True
 client = discord.Client(intents=intents)
 
 # Load the API key for the Google News API from the environment file
-api_keys = [os.environ["GOOGLE_NEWS_API_KEY_1"], os.environ["GOOGLE_NEWS_API_KEY_2"]]
+api_keys = [os.environ["GOOGLE_NEWS_API_KEY_1"], os.environ["GOOGLE_NEWS_API_KEY_2"], os.environ["GOOGLE_NEWS_API_KEY_3"]]
 CHANNEL_IDS = os.environ["DISCORD_CHANNEL_ID"].split(",")
 
 # Set up a counter to keep track of which API key is being used
