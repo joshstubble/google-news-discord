@@ -7,7 +7,7 @@ import datetime
 import dateutil.parser
 
 # Set up a counter to keep track of which API key is being used
-api_key_index = 0
+global api_key_index
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
@@ -29,11 +29,12 @@ most_recent_timestamps = {}
 
 @client.event
 async def on_ready():
-#    api_key_index = 0
     # Send a starting message to the "news" channels
     for channel_id in CHANNEL_IDS:
         news_channel = discord.utils.get(client.get_all_channels(), id=int(channel_id))
         await news_channel.send("News bot starting up! I'll be posting news articles.")
+    # Set the initial value of api_key_index
+    api_key_index = 0
     # Start a timer to retrieve news articles every hour
     printed = False  # Flag to track whether the response has been printed
     while True:
