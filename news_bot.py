@@ -38,13 +38,10 @@ async def on_ready():
     while True:
         await asyncio.sleep(150)
         # Build the query string for the Google News API
-#        query = "when:1h"
         async for message in news_channel.history(limit=1):
             last_message_timestamp = message.created_at
         params = {
- #           "q": query,
             "domains": ",".join(domains),  # Specify the domains to search
- #           "sortBy": "publishedAt",
             "language": "en",
             "apiKey": api_keys[api_key_index]
         }
@@ -64,8 +61,6 @@ async def on_ready():
             params["apiKey"] = api_keys[api_key_index]
             # Make the API request with the new API key
             response = requests.get("https://newsapi.org/v2/everything", params=params)
-            # If the new API key failed, try the next one
-            if response.status_code == 429:
             continue
             
         # Get the list of articles from the response
