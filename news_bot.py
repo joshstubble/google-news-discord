@@ -48,13 +48,6 @@ async def on_ready():
             "language": "en",
             "apiKey": api_keys[api_key_index]
         }
-        # Make the API request
-        try:
-            response = requests.get("https://newsapi.org/v2/everything", params=params)
-        except Exception as e:
-            logger.error("Error making API request: %s", e)
-        continue
-
   	    # Make the API request
         try:
             response = requests.get("https://newsapi.org/v2/everything", params=params)
