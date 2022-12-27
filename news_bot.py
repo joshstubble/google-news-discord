@@ -48,7 +48,8 @@ async def on_ready():
             "language": "en",
             "apiKey": api_keys[api_key_index]
         }
-  	    # Make the API request
+  	    
+        # Make the API request
         try:
             response = requests.get("https://newsapi.org/v2/everything", params=params)
         except Exception as e:
@@ -60,6 +61,8 @@ async def on_ready():
             # Switch to the alternate API key
             api_key_index = (api_key_index + 1) % 3  # This will switch between 0, 1, and 2
             continue
+        # Get the list of articles from the response
+        articles = response.json()["articles"]
         # Send a message with the articles to the "news" channel if they were published after the most recent message in the channel
         for article in articles:
             # Parse the publishedAt string into a datetime object
