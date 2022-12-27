@@ -57,6 +57,10 @@ async def on_ready():
         while response.status_code == 429:
             # Switch to the alternate API key
             api_key_index = (api_key_index + 1) % 3  # This will switch between 0, 1, and 2
+            # Check if the next API key is the one that was just used
+            if api_key_index == 0:
+                # Skip api_key_index 0 and try the next one (api_key_index 1)
+                api_key_index = 1
             # Update the API key in the request parameters
             params["apiKey"] = api_keys[api_key_index]
             # Make the API request with the new API key
