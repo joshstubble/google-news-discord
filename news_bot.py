@@ -6,8 +6,7 @@ import logging
 import datetime
 import dateutil.parser
 
-# Set up a counter to keep track of which API key is being used
-#global api_key_index
+api_key_index = 0
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
@@ -37,7 +36,7 @@ async def on_ready():
     printed = False  # Flag to track whether the response has been printed
     while True:
         # Set the initial value of api_key_index
-        api_key_index = 0
+        global api_key_index
         await asyncio.sleep(150)
         # Build the query string for the Google News API
         async for message in news_channel.history(limit=1):
