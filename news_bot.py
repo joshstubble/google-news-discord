@@ -63,6 +63,10 @@ async def on_ready():
             except Exception as e:
                 logger.error("Error parsing API response: %s", e)
                 continue
+        if response.status_code == 429:
+            # Wait 5 seconds before retrying the request
+            time.sleep(5)
+            continue
         # Send a message with the articles to the "news" channel if they were published after the most recent message in the channel
         for article in articles:
             # Parse the publishedAt string into a datetime object
