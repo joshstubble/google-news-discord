@@ -29,6 +29,7 @@ most_recent_timestamps = {}
 
 @client.event
 async def on_ready():
+    api_key_index = 0
     # Send a starting message to the "news" channels
     for channel_id in CHANNEL_IDS:
         news_channel = discord.utils.get(client.get_all_channels(), id=int(channel_id))
@@ -45,7 +46,6 @@ async def on_ready():
             "language": "en",
             "apiKey": api_keys[api_key_index]
         }
-        api_key_index = 0
         # Make the API request
         try:
             response = requests.get("https://newsapi.org/v2/everything", params=params)
