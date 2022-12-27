@@ -35,7 +35,6 @@ async def on_ready():
         await news_channel.send("News bot starting up! I'll be posting news articles.")
     # Start a timer to retrieve news articles every hour
     printed = False  # Flag to track whether the response has been printed
-    api_key_index = 0
     while True:
         await asyncio.sleep(150)
         # Build the query string for the Google News API
@@ -46,7 +45,7 @@ async def on_ready():
             "language": "en",
             "apiKey": api_keys[api_key_index]
         }
-  	    
+  	    api_key_index = 0
         # Make the API request
         try:
             response = requests.get("https://newsapi.org/v2/everything", params=params)
