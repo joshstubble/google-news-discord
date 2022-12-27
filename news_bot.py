@@ -53,19 +53,16 @@ async def on_ready():
             response = requests.get("https://newsapi.org/v2/everything", params=params)
         except Exception as e:
             logger.error("Error making API request: %s", e)
-            continue
-        # Check if the API returned a 429 error (Too Many Requests)
-        if response.status_code == 429:
-            # Switch to the alternate API key
-            api_key_index = 1 - api_key_index
-            continue
-        # Parse the response and retrieve the articles
-        try:
-            articles = response.json()["articles"]
-        except Exception as e:
-            logger.error("Error parsing API response: %s", e)
-            continue
+        continue
 
+  	# Check if the API returned a 200 (Success) status code
+        if response.status_code == 200:
+    	# Parse the response and retrieve the articles
+            try:
+                articles = response.json()["articles"]
+            except Exception as e:
+                logger.error("Error parsing API response: %s", e)
+                continue
         # Send a message with the articles to the "news" channel if they were published after the most recent message in the channel
         for article in articles:
             # Parse the publishedAt string into a datetime object
@@ -80,7 +77,9 @@ async def on_ready():
                 for channel_id in CHANNEL_IDS:
                     news_channel = discord.utils.get(client.get_all_channels(), id=int(channel_id))
                     await news_channel.send(f"{article['title']}\n{article['url']}")
-
+        else:
+            # Switch to the alternate API key
+            api_key_index = 1 - api_key_index
 # Load the Discord bot token from the environment file
 BOT_TOKEN = os.environ["DISCORD_BOT_TOKEN"]
 client.run(BOT_TOKEN)
