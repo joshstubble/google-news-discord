@@ -55,17 +55,17 @@ async def on_ready():
             logger.error("Error making API request: %s", e)
         continue
 
-  	# Check if the API returned a 200 (Success) status code
-        if response.status_code == 200:
-    	# Parse the response and retrieve the articles
-            try:
-                articles = response.json()["articles"]
-            except Exception as e:
-                logger.error("Error parsing API response: %s", e)
-                continue
+  	    # Make the API request
+        try:
+            response = requests.get("https://newsapi.org/v2/everything", params=params)
+        except Exception as e:
+            logger.error("Error making API request: %s", e)
+            continue
+
+        # Check if the API returned a 429 error (Too Many Requests)
         if response.status_code == 429:
-            # Wait 5 seconds before retrying the request
-            time.sleep(5)
+            # Switch to the alternate API key
+            api_key_index = (api_key_index + 1) % 3  # This will switch between 0, 1, and 2
             continue
         # Send a message with the articles to the "news" channel if they were published after the most recent message in the channel
         for article in articles:
