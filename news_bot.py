@@ -6,6 +6,9 @@ import logging
 import datetime
 import dateutil.parser
 
+# Set up a counter to keep track of which API key is being used
+api_key_index = 0
+
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
@@ -17,8 +20,6 @@ client = discord.Client(intents=intents)
 api_keys = [os.environ["GOOGLE_NEWS_API_KEY_1"], os.environ["GOOGLE_NEWS_API_KEY_2"], os.environ["GOOGLE_NEWS_API_KEY_3"]]
 CHANNEL_IDS = os.environ["DISCORD_CHANNEL_ID"].split(",")
 
-# Set up a counter to keep track of which API key is being used
-api_key_index = 0
 
 # Set up a list of domains to search for articles
 domains = ['axios.com', 'techmeme.com', 'nbcnews.com', 'npr.org', 'thehill.com', 'abcnews.com', 'cnn.com', 'yahoo.com', 'nypost.com', 'cnbc.com', 'washingtonpost.com', 'ft.com', 'politico.com', 'bloomberg.com', 'wsj.com', 'apnews.com', 'reuters.com', 'nytimes.com', 'bbc.com', 'abcnews.com', 'washingtontimes.com', 'foxnews.com', 'aljazeera.com']
