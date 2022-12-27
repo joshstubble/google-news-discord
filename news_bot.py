@@ -45,7 +45,7 @@ async def on_ready():
             "language": "en",
             "apiKey": api_keys[api_key_index]
         }
-  	    api_key_index = 0
+        api_key_index = 0
         # Make the API request
         try:
             response = requests.get("https://newsapi.org/v2/everything", params=params)
@@ -82,9 +82,7 @@ async def on_ready():
                 for channel_id in CHANNEL_IDS:
                     news_channel = discord.utils.get(client.get_all_channels(), id=int(channel_id))
                     await news_channel.send(f"{article['title']}\n{article['url']}")
-        else:
-            # Switch to the alternate API key
-            api_key_index = 1 - api_key_index
+  
 # Load the Discord bot token from the environment file
 BOT_TOKEN = os.environ["DISCORD_BOT_TOKEN"]
 client.run(BOT_TOKEN)
