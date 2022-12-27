@@ -71,6 +71,10 @@ async def on_ready():
             else:
                 # The API request was not successful, so restore the value of api_key_index to the last successfully used key
                 api_key_index = last_api_key_index
+        # If the API request was successful, process the response
+        if response.status_code == 200:
+            # Update the value of api_key_index to the current value of last_api_key_index
+            api_key_index = last_api_key_index
         # Get the list of articles from the response
         articles = response.json()["articles"]
         # Send a message with the articles to the "news" channel if they were published after the most recent message in the channel
