@@ -63,7 +63,10 @@ async def on_ready():
             params["apiKey"] = api_keys[api_key_index]
             # Make the API request with the new API key
             response = requests.get("https://newsapi.org/v2/everything", params=params)
+            # If the new API key failed, try the next one
+            if response.status_code == 429:
             continue
+            
         # Get the list of articles from the response
         articles = response.json()["articles"]
         # Send a message with the articles to the "news" channel if they were published after the most recent message in the channel
