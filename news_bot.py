@@ -56,9 +56,13 @@ async def on_ready():
             continue
 
         # Check if the API returned a 429 error (Too Many Requests)
-        if response.status_code == 429:
+        while response.status_code == 429:
             # Switch to the alternate API key
             api_key_index = (api_key_index + 1) % 3  # This will switch between 0, 1, and 2
+            # Update the API key in the request parameters
+            params["apiKey"] = api_keys[api_key_index]
+            # Make the API request with the new API key
+            response = requests.get("https://newsapi.org/v2/everything", params=params)
             continue
         # Get the list of articles from the response
         articles = response.json()["articles"]
