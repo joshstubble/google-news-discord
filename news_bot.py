@@ -56,8 +56,6 @@ async def on_ready():
 
         # Check if the API returned a 429 error (Too Many Requests)
         while response.status_code == 429:
-            # Save the current value of api_key_index before updating it
-            last_api_key_index = api_key_index
             # Switch to the alternate API key
             api_key_index = (api_key_index + 1) % 3  # This will switch between 0, 1, and 2
             # Update the API key in the request parameters
@@ -66,15 +64,9 @@ async def on_ready():
             response = requests.get("https://newsapi.org/v2/everything", params=params)
             # Check if the API request was successful
             if response.status_code == 200:
-                # The API request was successful, so update last_api_key_index to the current value of api_key_index
-                last_api_key_index = api_key_index
-            else:
-                # The API request was not successful, so restore the value of api_key_index to the last successfully used key
-                api_key_index = last_api_key_index
-        # If the API request was successful, process the response
-        if response.status_code == 200:
-            # Update the value of api_key_index to the current value of last_api_key_index
-            api_key_index = last_api_key_index
+                # Update the value of api_key_index to the current value of api_key_index
+                # This will ensure that the same API key is used on the next iteration of the loop
+                api_key_index = (api_key_index + 1) % 3
         # Get the list of articles from the response
         articles = response.json()["articles"]
         # Send a message with the articles to the "news" channel if they were published after the most recent message in the channel
