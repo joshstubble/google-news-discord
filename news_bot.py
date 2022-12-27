@@ -65,7 +65,7 @@ async def on_ready():
         # Check if the API returned a 429 error (Too Many Requests)
         if response.status_code == 429:
             # Switch to the alternate API key
-            api_key_index = (api_key_index + 1) % 3  # This will switch between 0, 1, and 2
+        api_key_index = (api_key_index + 1) % 3  # This will switch between 0, 1, and 2
             continue
         # Send a message with the articles to the "news" channel if they were published after the most recent message in the channel
         for article in articles:
