@@ -64,11 +64,11 @@ async def on_ready():
             params["apiKey"] = api_keys[api_key_index]
             # Make the API request with the new API key
             response = requests.get("https://newsapi.org/v2/everything", params=params)
-            continue
             # Check if the API request was successful
             if response.status_code == 200:
                 # The API request was successful, so update last_api_key_index to the current value of api_key_index
                 last_api_key_index = api_key_index
+            else:
                 # The API request was not successful, so restore the value of api_key_index to the last successfully used key
                 api_key_index = last_api_key_index
         # Get the list of articles from the response
