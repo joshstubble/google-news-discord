@@ -67,9 +67,8 @@ async def on_ready():
             response = requests.get("https://newsapi.org/v2/everything", params=params)
             # Check if the API request was successful
             if response.status_code == 200:
-                # Update the value of api_key_index to the current value of api_key_index
-                # This will ensure that the same API key is used on the next iteration of the loop
-                api_key_index = (api_key_index + 1) % 3
+                # Reset the value of api_key_index to 0
+                api_key_index = 0
         # Get the list of articles from the response
         articles = response.json()["articles"]
         # Send a message with the articles to the "news" channel if they were published after the most recent message in the channel
