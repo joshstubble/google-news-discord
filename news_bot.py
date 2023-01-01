@@ -37,6 +37,10 @@ async def on_ready():
     while True:
         # Set the initial value of api_key_index
         global api_key_index
+        # Set the maximum number of times to switch between API keys before breaking out of the loop
+        max_retries = 3
+        # Set the initial value of the retry counter
+        retries = 0
         await asyncio.sleep(150)
         # Build the query string for the Google News API
         async for message in news_channel.history(limit=1):
@@ -68,6 +72,12 @@ async def on_ready():
             # Update the value of api_key_index to the current value of api_key_index
             # This will ensure that the same API key is not used on the next iteration of the loop
             api_key_index = (api_key_index + 1) % 3
+            # Increment the retry counter
+            retries += 1
+            # Check if the maximum number of retries has been reached
+            if retries >= max_retries:
+                # Break out of the loop
+                break
         # Get the list of articles from the response
         articles = response.json()["articles"]
         # Send a message with the articles to the "news" channel if they were published after the most recent message in the channel
