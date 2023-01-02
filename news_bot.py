@@ -62,16 +62,12 @@ async def on_ready():
             # Switch to the alternate API key
             api_key_index = (api_key_index + 1) % 3  # This will switch between 0, 1, and 2
             # Check if the next API key is the one that was just used
-            if api_key_index == 0:
-                # Skip api_key_index 0 and try the next one (api_key_index 1)
-                api_key_index = 1
+            if  api_key_index == 3:
+                api_key_index = 0
             # Update the API key in the request parameters
             params["apiKey"] = api_keys[api_key_index]
             # Make the API request with the new API key
             response = requests.get("https://newsapi.org/v2/everything", params=params)
-            # Update the value of api_key_index to the current value of api_key_index
-            # This will ensure that the same API key is not used on the next iteration of the loop
-            api_key_index = (api_key_index + 1) % 3
             # Increment the retry counter
             retries += 1
             # Check if the maximum number of retries has been reached
