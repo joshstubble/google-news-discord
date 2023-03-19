@@ -34,7 +34,7 @@ async def fetch_and_post_news():
         global api_key_index
         max_retries = 3
         retries = 0
-        await asyncio.sleep(3600)
+        await asyncio.sleep(200)
         async for message in news_channel.history(limit=1):
             last_message_timestamp = message.created_at
         params = {
