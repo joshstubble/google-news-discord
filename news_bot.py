@@ -35,8 +35,10 @@ async def fetch_and_post_news():
         max_retries = 3
         retries = 0
         await asyncio.sleep(200)
-        async for message in news_channel.history(limit=1):
-            last_message_timestamp = message.created_at
+        for channel_id in CHANNEL_IDS:
+            news_channel = discord.utils.get(client.get_all_channels(), id=int(channel_id))
+            async for message in news_channel.history(limit=1):
+                last_message_timestamp = message.created_at
         params = {
             "domains": ",".join(domains),
             "language": "en",
